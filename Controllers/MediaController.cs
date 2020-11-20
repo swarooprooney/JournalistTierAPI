@@ -38,7 +38,7 @@ namespace JournalistTierAPI.Controllers
             if (!string.IsNullOrEmpty(mediaName))
             {
                 var media = new Media { Name = mediaName };
-                var isMediaAdded = await _mediaRepo.AddMediaAsyc(media);
+                var isMediaAdded = await _mediaRepo.AddMediaAsync(media);
                 if (isMediaAdded)
                 {
                     return CreatedAtRoute("GetMediaById", new { id = media.MediaId }, _mapper.Map<MediaDto>(media));

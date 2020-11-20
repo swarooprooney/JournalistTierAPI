@@ -8,7 +8,7 @@ namespace JournalistTierAPI.Data
     {
         Task<Media> GetMediaByIdAsync(int id);
 
-        Task<bool> AddMediaAsyc(Media media);
+        Task<bool> AddMediaAsync(Media media);
 
         Task<IEnumerable<Media>> GetAllMediaAsync();
 

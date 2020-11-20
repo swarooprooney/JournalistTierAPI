@@ -7,8 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JournalistTierAPI.Data
 {
-    [ApiController]
-    [Route("api/[controller]")]
     public class MediaRepo : IMediaRepo
     {
         private readonly DataContext _context;
@@ -18,7 +16,7 @@ namespace JournalistTierAPI.Data
             _context = context;
         }
 
-        public async Task<bool> AddMediaAsyc(Media media)
+        public async Task<bool> AddMediaAsync(Media media)
         {
             await _context.Media.AddAsync(media);
             return await _context.SaveChangesAsync() > 0 ? true : false;
