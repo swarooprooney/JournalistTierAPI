@@ -58,6 +58,10 @@ namespace JournalistTierAPI.Controllers
         [HttpPost("RateMedia")]
         public async Task<IActionResult> RateMedia([FromBody] UserMediaRatingDto userMediaRatingDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             var userMediaRating = _mapper.Map<UserMediaRating>(userMediaRatingDto);
             var result = await _mediaRepo.RateMediaAsync(userMediaRating);
             if (result)

@@ -61,6 +61,10 @@ namespace JournalistTierAPI.Controllers
         [HttpPost("RateJournalist")]
         public async Task<IActionResult> RateJournalist([FromBody] UserJournalistRatingDto userJournalistRatingDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             var userJournalistRating = _mapper.Map<UserJournalistRating>(userJournalistRatingDto);
             var result = await _repo.RateJournalistAsync(userJournalistRating);
             if (result)
