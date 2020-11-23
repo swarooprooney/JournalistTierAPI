@@ -35,7 +35,11 @@ namespace JournalistTierAPI
             services.AddScoped<IRatingCalculatorCoordinator, RatingCalculatorCoordinator>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen();
-            services.AddCors();
+            services.AddCors(options =>
+          {
+              options.AddDefaultPolicy(policy => policy.AllowAnyHeader()
+                  .AllowAnyMethod().WithOrigins("http://localhost:4200"));
+          });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,19 +50,20 @@ namespace JournalistTierAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseRouting();
+
+            app.UseCors();
+
+            app.UseAuthorization();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Journalist Tier API");
         c.RoutePrefix = string.Empty;
     });
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
-            app.UseRouting();
 
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200/"));
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
