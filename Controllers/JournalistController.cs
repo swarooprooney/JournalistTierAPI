@@ -9,9 +9,7 @@ using JournalistTierAPI.Coordinators;
 
 namespace JournalistTierAPI.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class JournalistController : ControllerBase
+    public class JournalistController : BaseApiController
     {
         private readonly IMapper _mapper;
         private readonly IJournalistRepo _repo;

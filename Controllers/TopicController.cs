@@ -8,9 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JournalistTierAPI.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class TopicController : ControllerBase
+    public class TopicController : BaseApiController
     {
         private readonly ITopicRepo _topicRepo;
         private readonly IMapper _mapper;
