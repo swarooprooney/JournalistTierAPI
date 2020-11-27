@@ -10,7 +10,13 @@ namespace JournalistTierAPI.Model
         public int UserId { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string UserName { get; set; }
+
+        [Required]
+        public byte[] PasswordHash { get; set; }
+
+        [Required]
+        public byte[] PasswordSalt { get; set; }
 
         public ICollection<UserJournalistRating> UserJournalistRatings { get; set; }
 
