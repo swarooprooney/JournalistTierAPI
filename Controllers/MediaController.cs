@@ -4,6 +4,7 @@ using AutoMapper;
 using JournalistTierAPI.Data;
 using JournalistTierAPI.Dtos;
 using JournalistTierAPI.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JournalistTierAPI.Controllers
@@ -54,6 +55,7 @@ namespace JournalistTierAPI.Controllers
         }
 
         [HttpPost("RateMedia")]
+        [Authorize]
         public async Task<IActionResult> RateMedia([FromBody] UserMediaRatingDto userMediaRatingDto)
         {
             if (!ModelState.IsValid)

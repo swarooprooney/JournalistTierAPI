@@ -6,6 +6,7 @@ using JournalistTierAPI.Dtos;
 using JournalistTierAPI.Model;
 using System.Collections.Generic;
 using JournalistTierAPI.Coordinators;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JournalistTierAPI.Controllers
 {
@@ -57,6 +58,7 @@ namespace JournalistTierAPI.Controllers
         }
 
         [HttpPost("RateJournalist")]
+        [Authorize]
         public async Task<IActionResult> RateJournalist([FromBody] UserJournalistRatingDto userJournalistRatingDto)
         {
             if (!ModelState.IsValid)

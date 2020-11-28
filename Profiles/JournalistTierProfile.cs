@@ -15,6 +15,7 @@ namespace JournalistTierAPI.Profiles
             CreateMap<UserMediaRatingDto, UserMediaRating>();
             CreateMap<TierQueryDto, UserJournalistRating>();
             CreateMap<TierQueryDto, UserMediaRating>();
+            CreateMap<User, UserDto>();
         }
     }
 }

@@ -1,13 +1,11 @@
 using System;
-using JournalistTierAPI.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using JournalistTierAPI.Coordinators;
+using JournalistTierAPI.Extensions;
 
 namespace JournalistTierAPI
 {
@@ -23,16 +21,7 @@ namespace JournalistTierAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-              .AddDbContext<DataContext>(opt =>
-                  opt
-                      .UseSqlServer(Configuration
-                          .GetConnectionString("JournalistTierConnection")));
-            services.AddControllers();
-            services.AddScoped<ITopicRepo, TopicRepo>();
-            services.AddScoped<IJournalistRepo, JournalistRepo>();
-            services.AddScoped<IMediaRepo, MediaRepo>();
-            services.AddScoped<IRatingCalculatorCoordinator, RatingCalculatorCoordinator>();
+            services.AddApplicationServices(Configuration);
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen();
             services.AddCors(options =>
@@ -40,6 +29,7 @@ namespace JournalistTierAPI
               options.AddDefaultPolicy(policy => policy.AllowAnyHeader()
                   .AllowAnyMethod().WithOrigins("https://localhost:4200"));
           });
+            services.AddIdentityServices(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +43,7 @@ namespace JournalistTierAPI
             app.UseRouting();
 
             app.UseCors();
-
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
