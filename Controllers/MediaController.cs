@@ -55,7 +55,7 @@ namespace JournalistTierAPI.Controllers
         }
 
         [HttpPost("RateMedia")]
-        [Authorize]
+
         public async Task<IActionResult> RateMedia([FromBody] UserMediaRatingDto userMediaRatingDto)
         {
             if (!ModelState.IsValid)

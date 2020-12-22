@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using JournalistTierAPI.Extensions;
+using JournalistTierAPI.Middleware;
 
 namespace JournalistTierAPI
 {
@@ -36,10 +37,11 @@ namespace JournalistTierAPI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-            if (env.IsDevelopment())
+            /*if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
+            }*/
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseRouting();
 
             app.UseCors();
