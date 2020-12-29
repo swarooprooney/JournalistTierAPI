@@ -58,7 +58,6 @@ namespace JournalistTierAPI.Controllers
         }
 
         [HttpPost("RateJournalist")]
-        [Authorize]
         public async Task<IActionResult> RateJournalist([FromBody] UserJournalistRatingDto userJournalistRatingDto)
         {
             if (!ModelState.IsValid)
@@ -77,17 +76,16 @@ namespace JournalistTierAPI.Controllers
         [HttpGet("GetJournalistTier")]
         public async Task<IActionResult> GetJournalistTier([FromQuery] TierQueryDto tierQueryDto)
         {
-            if (tierQueryDto.JournalistId == 0 && tierQueryDto.MediaId == 0)
+            if (tierQueryDto.JournalistId <= 0 && tierQueryDto.MediaId <= 0)
             {
-                return BadRequest("You should atleast provide information about journalist or media you are trying to look up");
+                return BadRequest("You should atleast provide information about journalist or media you are trying to look up and a topic you want the ratings to");
             }
             var result = await _ratingCoordinator.GetRatingsAsync(tierQueryDto);
             if (result <= 0)
             {
-                return NotFound("Not ratings are recorded for given journalist/media");
+                return Ok(0.0d);
             }
             return Ok(result);
         }
-
     }
 }

@@ -32,8 +32,18 @@ namespace JournalistTierAPI.Data
 
         public Task<double> GetJournalistRatingAsync(UserJournalistRating userJournalistRating)
         {
-            return _context.UserJournalistRating.Where(m => m.JournalistId == userJournalistRating.JournalistId && m.TopicId == userJournalistRating.TopicId).AverageAsync(x => x.Rating);
-
+            if (_context.UserJournalistRating.Any(x => x.JournalistId == userJournalistRating.JournalistId))
+            {
+                if (userJournalistRating.TopicId <= 0)
+                {
+                    return _context.UserJournalistRating.Where(m => m.JournalistId == userJournalistRating.JournalistId).AverageAsync(x => x.Rating);
+                }
+                return _context.UserJournalistRating.Where(m => m.JournalistId == userJournalistRating.JournalistId && m.TopicId == userJournalistRating.TopicId).AverageAsync(x => x.Rating);
+            }
+            else
+            {
+                return Task.FromResult(0.0d);
+            }
         }
 
         public async Task<bool> RateJournalistAsync(UserJournalistRating userJournalistRating)
