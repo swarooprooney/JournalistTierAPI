@@ -28,7 +28,7 @@ namespace JournalistTierAPI.Controllers
             var result = await _repo.GetJournalistByIdAsync(id);
             if (result != null)
             {
-                return Ok(_mapper.Map<JournalistDto>(result));
+                return Ok(result);
             }
             return NotFound($"The Journalist with id: {id} is not found, please use add journalist method to add first");
         }
@@ -54,7 +54,7 @@ namespace JournalistTierAPI.Controllers
         public async Task<IActionResult> GetAllJournalist()
         {
             var result = await _repo.GetAllJournalistAsync();
-            return Ok(_mapper.Map<IEnumerable<JournalistDto>>(result));
+            return Ok(result);
         }
 
         [HttpPost("RateJournalist")]

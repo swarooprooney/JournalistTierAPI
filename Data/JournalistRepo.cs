@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using JournalistTierAPI.Dtos;
 using JournalistTierAPI.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,9 +12,12 @@ namespace JournalistTierAPI.Data
     public class JournalistRepo : IJournalistRepo
     {
         private readonly DataContext _context;
-        public JournalistRepo(DataContext context)
+        private readonly IMapper _mapper;
+        public JournalistRepo(DataContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
+
         }
 
         public async Task<bool> AddJournalistAsync(Journalist journalist)
@@ -20,14 +26,14 @@ namespace JournalistTierAPI.Data
             return await _context.SaveChangesAsync() > 0 ? true : false;
         }
 
-        public async Task<IEnumerable<Journalist>> GetAllJournalistAsync()
+        public async Task<IEnumerable<JournalistDto>> GetAllJournalistAsync()
         {
-            return await _context.Journalist.ToListAsync();
+            return await _context.Journalist.ProjectTo<JournalistDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
-        public async Task<Journalist> GetJournalistByIdAsync(int id)
+        public async Task<JournalistDto> GetJournalistByIdAsync(int id)
         {
-            return await _context.Journalist.FirstOrDefaultAsync(x => x.JournalistId == id);
+            return await _context.Journalist.ProjectTo<JournalistDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.JournalistId == id);
         }
 
         public Task<double> GetJournalistRatingAsync(UserJournalistRating userJournalistRating)

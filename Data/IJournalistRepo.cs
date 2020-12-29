@@ -1,16 +1,17 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using JournalistTierAPI.Dtos;
 using JournalistTierAPI.Model;
 
 namespace JournalistTierAPI.Data
 {
     public interface IJournalistRepo
     {
-        Task<Journalist> GetJournalistByIdAsync(int id);
+        Task<JournalistDto> GetJournalistByIdAsync(int id);
 
         Task<bool> AddJournalistAsync(Journalist journalist);
 
-        Task<IEnumerable<Journalist>> GetAllJournalistAsync();
+        Task<IEnumerable<JournalistDto>> GetAllJournalistAsync();
 
         Task<bool> RateJournalistAsync(UserJournalistRating userJournalistRating);
 
