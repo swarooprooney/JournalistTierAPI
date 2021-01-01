@@ -54,9 +54,6 @@ namespace JournalistTierAPI
         c.RoutePrefix = string.Empty;
     });
             //app.UseHttpsRedirection();
-
-
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

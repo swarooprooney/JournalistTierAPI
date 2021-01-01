@@ -34,6 +34,7 @@ namespace JournalistTierAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddJournalist([FromBody] string journalistName)
         {
             if (!string.IsNullOrEmpty(journalistName))
@@ -58,6 +59,7 @@ namespace JournalistTierAPI.Controllers
         }
 
         [HttpPost("RateJournalist")]
+        [Authorize]
         public async Task<IActionResult> RateJournalist([FromBody] UserJournalistRatingDto userJournalistRatingDto)
         {
             if (!ModelState.IsValid)

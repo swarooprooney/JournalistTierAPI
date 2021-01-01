@@ -32,6 +32,7 @@ namespace JournalistTierAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddMedia([FromBody] string mediaName)
         {
             if (!string.IsNullOrEmpty(mediaName))

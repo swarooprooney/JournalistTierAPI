@@ -4,6 +4,7 @@ using AutoMapper;
 using JournalistTierAPI.Data;
 using JournalistTierAPI.Dtos;
 using JournalistTierAPI.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JournalistTierAPI.Controllers
@@ -20,6 +21,7 @@ namespace JournalistTierAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddTopic([FromBody] string topicName)
         {
             if (!string.IsNullOrEmpty(topicName))
