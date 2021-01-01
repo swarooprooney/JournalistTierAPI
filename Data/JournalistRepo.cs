@@ -28,7 +28,7 @@ namespace JournalistTierAPI.Data
 
         public async Task<IEnumerable<JournalistDto>> GetAllJournalistAsync()
         {
-            return await _context.Journalist.ProjectTo<JournalistDto>(_mapper.ConfigurationProvider).ToListAsync();
+            return await _context.Journalist.Where(x => x.IsApproved == true).ProjectTo<JournalistDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
         public async Task<JournalistDto> GetJournalistByIdAsync(int id)

@@ -38,7 +38,7 @@ namespace JournalistTierAPI.Controllers
         public async Task<IActionResult> AddJournalist([FromBody] CreateJournalistDto createJournalist)
         {
 
-            var journalist = new Journalist { Name = createJournalist.Name, Description = createJournalist.Description };
+            var journalist = new Journalist { Name = createJournalist.Name, Description = createJournalist.Description, PhotoUrl = createJournalist.PhotoUrl };
             bool result = await _repo.AddJournalistAsync(journalist);
             if (result)
             {
