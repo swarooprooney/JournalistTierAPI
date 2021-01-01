@@ -18,6 +18,10 @@ namespace JournalistTierAPI.Model
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        [Required]
+        public bool IsApproved { get; set; } = false;
+
         public ICollection<UserJournalistRating> UserJournalistRatings { get; set; }
 
         public ICollection<UserMediaRating> UserMediaRatings { get; set; }
