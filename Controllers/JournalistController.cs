@@ -35,20 +35,17 @@ namespace JournalistTierAPI.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddJournalist([FromBody] string journalistName)
+        public async Task<IActionResult> AddJournalist([FromBody] CreateJournalistDto createJournalist)
         {
-            if (!string.IsNullOrEmpty(journalistName))
-            {
-                var journalist = new Journalist { Name = journalistName };
-                bool result = await _repo.AddJournalistAsync(journalist);
-                if (result)
-                {
-                    return CreatedAtRoute("GetJournalistById", new { id = journalist.JournalistId }, _mapper.Map<JournalistDto>(journalist));
-                }
-                return StatusCode(500, "Unable to Add Journalist at this time, please try later");
-            }
 
-            return BadRequest("Journalist Name cannot be empty");
+            var journalist = new Journalist { Name = createJournalist.Name, Description = createJournalist.Description };
+            bool result = await _repo.AddJournalistAsync(journalist);
+            if (result)
+            {
+                return CreatedAtRoute("GetJournalistById", new { id = journalist.JournalistId }, _mapper.Map<JournalistDto>(journalist));
+            }
+            return StatusCode(500, "Unable to Add Journalist at this time, please try later");
+
         }
 
         [HttpGet]

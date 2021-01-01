@@ -19,6 +19,8 @@ namespace JournalistTierAPI.Model
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        public string PhotoUrl { get; set; }
+
         public ICollection<UserJournalistRating> UserJournalistRatings { get; set; }
     }
 }
