@@ -22,20 +22,15 @@ namespace JournalistTierAPI.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddTopic([FromBody] string topicName)
+        public async Task<IActionResult> AddTopic([FromBody] CreateTopicDto topicDto)
         {
-            if (!string.IsNullOrEmpty(topicName))
+            var topic = new Topic { Name = topicDto.Name, Description = topicDto.Description };
+            var result = await _topicRepo.InsertTopicToDatabaseAsync(topic);
+            if (result)
             {
-
-                var topic = new Topic { Name = topicName };
-                var result = await _topicRepo.InsertTopicToDatabaseAsync(topic);
-                if (result)
-                {
-                    return CreatedAtRoute("GetTopicById", new { id = topic.TopicId }, _mapper.Map<TopicDto>(topic));
-                }
-                return StatusCode(500, "Unable to Add topic at this time, please try later");
+                return CreatedAtRoute("GetTopicById", new { id = topic.TopicId }, _mapper.Map<TopicDto>(topic));
             }
-            return BadRequest("you must atleast have one topic to Add");
+            return StatusCode(500, "Unable to Add topic at this time, please try later");
         }
 
         [HttpGet("{id}", Name = "GetTopicById")]
