@@ -86,5 +86,12 @@ namespace JournalistTierAPI.Controllers
             }
             return Ok(result);
         }
+
+        [HttpGet("GetJournalistRatingByTopic")]
+        public async Task<IActionResult> GetJournalistRatingByTopic([FromQuery] int journalistId)
+        {
+            var result = await _ratingCoordinator.GetRatingByTopicAsync(journalistId);
+            return Ok(result);
+        }
     }
 }

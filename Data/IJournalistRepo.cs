@@ -16,5 +16,7 @@ namespace JournalistTierAPI.Data
         Task<bool> RateJournalistAsync(UserJournalistRating userJournalistRating);
 
         Task<double> GetJournalistRatingAsync(UserJournalistRating userJournalistRating);
+
+        Task<IEnumerable<RatingDto>> GetJournalistTopicRatingAsync(int journalistId);
     }
 }
