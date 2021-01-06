@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using JournalistTierAPI.Data;
@@ -17,6 +18,11 @@ namespace JournalistTierAPI.Coordinators
             _mapper = mapper;
             _journalistRepo = journalistRepo;
             _mediaRepo = mediaRepo;
+        }
+
+        public async Task<IEnumerable<RatingDto>> GetRatingByTopicAsync(int journalistId)
+        {
+            return await _journalistRepo.GetJournalistTopicRatingAsync(journalistId);
         }
 
         public async Task<double> GetRatingsAsync(TierQueryDto tierQueryDto)

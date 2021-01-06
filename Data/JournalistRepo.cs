@@ -17,7 +17,6 @@ namespace JournalistTierAPI.Data
         {
             _mapper = mapper;
             _context = context;
-
         }
 
         public async Task<bool> AddJournalistAsync(Journalist journalist)
@@ -50,6 +49,29 @@ namespace JournalistTierAPI.Data
             {
                 return Task.FromResult(0.0d);
             }
+        }
+
+        public async Task<IEnumerable<RatingDto>> GetJournalistTopicRatingAsync(int journalistId)
+        {
+
+            var result = await _context.UserJournalistRating.Where(x => x.JournalistId == journalistId).GroupBy(x => x.TopicId).Select(x => new RatingDto
+            {
+                TopicId = x.Key,
+                Rating = x.Average(y => y.Rating),
+                TopicName = _context.UserJournalistRating.Where(t => t.TopicId == x.Key).Select(t => t.Topic.Name).SingleOrDefault()
+            }).ToListAsync();
+
+            return result;
+
+            // var finalResult = await(from r in result
+            //                         join t in _context.Topic on r.TopicId equals t.TopicId into mapping
+            //                         from t in mapping.DefaultIfEmpty()
+            //                         select new RatingDto
+            //                         {
+            //                             Rating = r.Rating,
+            //                             TopicName = t.Name,
+            //                             TopicId = t.TopicId
+            //                         }).ToListAsync();
         }
 
         public async Task<bool> RateJournalistAsync(UserJournalistRating userJournalistRating)
