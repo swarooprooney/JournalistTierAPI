@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,6 +12,24 @@ namespace JournalistTierAPI.Model
 
         [Required]
         public string UserName { get; set; }
+
+        [Required]
+        public string KnownAs { get; set; }
+
+        [Required]
+        public DateTime DateOfBirth { get; set; }
+
+        [Required]
+        public string City { get; set; }
+
+        [Required]
+        public string State { get; set; }
+
+        [Required]
+        public string Country { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; } = false;
 
         [Required]
         public byte[] PasswordHash { get; set; }

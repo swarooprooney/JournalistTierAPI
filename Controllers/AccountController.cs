@@ -6,6 +6,7 @@ using JournalistTierAPI.Data;
 using JournalistTierAPI.Dtos;
 using JournalistTierAPI.Model;
 using JournalistTierAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JournalistTierAPI.Controllers
@@ -35,7 +36,12 @@ namespace JournalistTierAPI.Controllers
             {
                 UserName = userForRegisterDto.UserName.ToLower(),
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userForRegisterDto.Password)),
-                PasswordSalt = hmac.Key
+                PasswordSalt = hmac.Key,
+                City = userForRegisterDto.City,
+                DateOfBirth = userForRegisterDto.DateOfBirth,
+                Country = userForRegisterDto.Country,
+                State = userForRegisterDto.State,
+                KnownAs = userForRegisterDto.KnownAs
             };
             var registeredUser = await _repo.RegisterAsync(user);
             var userDto = _mapper.Map<UserDto>(registeredUser);
@@ -63,6 +69,33 @@ namespace JournalistTierAPI.Controllers
             var userDto = _mapper.Map<UserDto>(user);
             userDto.Token = _tokenService.CreateToken(user);
             return Ok(userDto);
+        }
+
+        [HttpPut("updateuser")]
+        [Authorize]
+        public async Task<ActionResult> UpdateUser(UserForUpdateDto userDto)
+        {
+            var user = await _repo.GetUserAsync(userDto.UserName);
+            _mapper.Map(userDto, user);
+            var isUpdated = await _repo.UpdateUserAsync(user);
+            if (isUpdated)
+            {
+                return NoContent();
+            }
+            return BadRequest("Unable to update");
+        }
+
+
+
+        [HttpGet("{id}", Name = "GetUserByUserId")]
+        public async Task<ActionResult<UserDto>> GetUserByUserId(int id)
+        {
+            var user = await _repo.GetUserAsync(id);
+            if (user != null)
+            {
+                return Ok(user);
+            }
+            return BadRequest($"Unable to find the user with userId : {id}");
         }
     }
 }

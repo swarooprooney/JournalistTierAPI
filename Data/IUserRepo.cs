@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using JournalistTierAPI.Dtos;
 using JournalistTierAPI.Model;
 
 namespace JournalistTierAPI.Data
@@ -10,5 +11,9 @@ namespace JournalistTierAPI.Data
         Task<bool> UserExistsAsync(string username);
 
         Task<User> GetUserAsync(string username);
+
+        Task<UserDto> GetUserAsync(int id);
+
+        Task<bool> UpdateUserAsync(User user);
     }
 }
