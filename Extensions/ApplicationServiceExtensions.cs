@@ -1,5 +1,6 @@
 using JournalistTierAPI.Coordinators;
 using JournalistTierAPI.Data;
+using JournalistTierAPI.Helpers;
 using JournalistTierAPI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,7 @@ namespace JournalistTierAPI.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
             services
                           .AddDbContext<DataContext>(opt =>
                               opt
@@ -23,6 +25,7 @@ namespace JournalistTierAPI.Extensions
             services.AddScoped<IRatingCalculatorCoordinator, RatingCalculatorCoordinator>();
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IPhotoService, PhotoService>();
             return services;
         }
     }

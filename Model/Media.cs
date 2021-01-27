@@ -21,6 +21,8 @@ namespace JournalistTierAPI.Model
         [Required]
         public bool IsApproved { get; set; } = false;
 
+        public string PhotoUrl { get; set; }
+
         public ICollection<UserMediaRating> UserMediaRatings { get; set; }
     }
 }

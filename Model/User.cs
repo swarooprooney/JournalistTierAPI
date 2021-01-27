@@ -37,6 +37,8 @@ namespace JournalistTierAPI.Model
         [Required]
         public byte[] PasswordSalt { get; set; }
 
+        public string PhotoUrl { get; set; }
+
         public ICollection<UserJournalistRating> UserJournalistRatings { get; set; }
 
         public ICollection<UserMediaRating> UserMediaRatings { get; set; }

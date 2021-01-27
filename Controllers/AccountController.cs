@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using JournalistTierAPI.Dtos;
 using JournalistTierAPI.Model;
 using JournalistTierAPI.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JournalistTierAPI.Controllers
@@ -16,9 +18,12 @@ namespace JournalistTierAPI.Controllers
         private readonly IUserRepo _repo;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
-        public AccountController(IUserRepo repo, IMapper mapper, ITokenService tokenService)
+        private readonly IPhotoService _photoService;
+
+        public AccountController(IUserRepo repo, IMapper mapper, ITokenService tokenService, IPhotoService photoService)
         {
             _tokenService = tokenService;
+            _photoService = photoService;
             _mapper = mapper;
             _repo = repo;
         }
@@ -85,6 +90,29 @@ namespace JournalistTierAPI.Controllers
             return BadRequest("Unable to update");
         }
 
+        [HttpPost("add-photo")]
+        [Authorize]
+        public async Task<ActionResult> AddPhoto(IFormFile file)
+        {
+            if (file.Length > 0)
+            {
+                var uploadPhoto = await _photoService.AddPhotoAsync(file);
+                UserForUpdateDto userDto = new UserForUpdateDto
+                {
+                    PhotoUrl = uploadPhoto.Url.ToString()
+                };
+
+                var userName = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var user = await _repo.GetUserAsync(userName);
+                _mapper.Map(userDto, user);
+                var isUpdated = await _repo.UpdateUserAsync(user);
+                if (isUpdated)
+                {
+                    return Ok(user.PhotoUrl);
+                }
+            }
+            return BadRequest("Unable to update");
+        }
 
 
         [HttpGet("{id}", Name = "GetUserByUserId")]

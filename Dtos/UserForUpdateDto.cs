@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace JournalistTierAPI.Dtos
 {
@@ -13,7 +14,9 @@ namespace JournalistTierAPI.Dtos
         public string City { get; set; }
 
         public string State { get; set; }
-        
+
         public string Country { get; set; }
+
+        public string PhotoUrl { get; set; }
     }
 }
