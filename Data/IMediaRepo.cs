@@ -15,5 +15,7 @@ namespace JournalistTierAPI.Data
         Task<bool> RateMediaAsync(UserMediaRating userMediaRating);
 
         Task<double> GetMediaRatingAsync(UserMediaRating userMediaRating);
+
+        Task<int> GetTotalVotesAsync(int mediaId);
     }
 }

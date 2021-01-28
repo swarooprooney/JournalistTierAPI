@@ -35,19 +35,19 @@ namespace JournalistTierAPI.Data
             return await _context.Journalist.ProjectTo<JournalistDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.JournalistId == id);
         }
 
-        public Task<double> GetJournalistRatingAsync(UserJournalistRating userJournalistRating)
+        public async Task<double> GetJournalistRatingAsync(UserJournalistRating userJournalistRating)
         {
             if (_context.UserJournalistRating.Any(x => x.JournalistId == userJournalistRating.JournalistId))
             {
                 if (userJournalistRating.TopicId <= 0)
                 {
-                    return _context.UserJournalistRating.Where(m => m.JournalistId == userJournalistRating.JournalistId).AverageAsync(x => x.Rating);
+                    return await _context.UserJournalistRating.Where(m => m.JournalistId == userJournalistRating.JournalistId).AverageAsync(x => x.Rating);
                 }
-                return _context.UserJournalistRating.Where(m => m.JournalistId == userJournalistRating.JournalistId && m.TopicId == userJournalistRating.TopicId).AverageAsync(x => x.Rating);
+                return await _context.UserJournalistRating.Where(m => m.JournalistId == userJournalistRating.JournalistId && m.TopicId == userJournalistRating.TopicId).AverageAsync(x => x.Rating);
             }
             else
             {
-                return Task.FromResult(0.0d);
+                return await Task.FromResult(0.0d);
             }
         }
 
@@ -72,6 +72,11 @@ namespace JournalistTierAPI.Data
             //                             TopicName = t.Name,
             //                             TopicId = t.TopicId
             //                         }).ToListAsync();
+        }
+
+        public async Task<int> GetTotalVotesAsync(int journalistId)
+        {
+            return await _context.UserJournalistRating.Where(x => x.JournalistId == journalistId).CountAsync();
         }
 
         public async Task<bool> RateJournalistAsync(UserJournalistRating userJournalistRating)

@@ -73,18 +73,20 @@ namespace JournalistTierAPI.Controllers
         }
 
         [HttpGet("GetJournalistTier")]
-        public async Task<IActionResult> GetJournalistTier([FromQuery] TierQueryDto tierQueryDto)
+        public async Task<ActionResult<ReturnRatingDto>> GetJournalistTier([FromQuery] TierQueryDto tierQueryDto)
         {
             if (tierQueryDto.JournalistId <= 0 && tierQueryDto.MediaId <= 0)
             {
                 return BadRequest("You should atleast provide information about journalist or media you are trying to look up and a topic you want the ratings to");
             }
-            var result = await _ratingCoordinator.GetRatingsAsync(tierQueryDto);
-            if (result <= 0)
+            var retunrRatingDto = new ReturnRatingDto();
+            retunrRatingDto.Rating = await _ratingCoordinator.GetRatingsAsync(tierQueryDto);
+            if (retunrRatingDto.Rating <= 0)
             {
-                return Ok(0.0d);
+                retunrRatingDto.Rating = 0.0d;
             }
-            return Ok(result);
+            retunrRatingDto.NumberOfVotes = await _ratingCoordinator.GetTotalVotesAsync(tierQueryDto);
+            return Ok(retunrRatingDto);
         }
 
         [HttpGet("GetJournalistRatingByTopic")]

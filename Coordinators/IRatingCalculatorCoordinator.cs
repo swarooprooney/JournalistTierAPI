@@ -9,5 +9,7 @@ namespace JournalistTierAPI.Coordinators
         Task<double> GetRatingsAsync(TierQueryDto tierQueryDto);
 
         Task<IEnumerable<RatingDto>> GetRatingByTopicAsync(int JournalistId);
+
+        Task<int> GetTotalVotesAsync(TierQueryDto tierQueryDto);
     }
 }

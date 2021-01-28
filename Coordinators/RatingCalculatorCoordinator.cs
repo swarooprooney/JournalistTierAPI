@@ -37,11 +37,30 @@ namespace JournalistTierAPI.Coordinators
             {
                 mediaRating = await _mediaRepo.GetMediaRatingAsync(_mapper.Map<UserMediaRating>(tierQueryDto));
             }
-            if (journalistRating > mediaRating)
+            if (journalistRating > 0 && mediaRating > 0)
+            {
+                return (journalistRating + mediaRating) / 2;
+            }
+            else if (journalistRating > 0)
             {
                 return journalistRating;
             }
             return mediaRating;
+        }
+
+        public async Task<int> GetTotalVotesAsync(TierQueryDto tierQueryDto)
+        {
+            int journalistVotes = 0;
+            int mediaVotes = 0;
+            if (tierQueryDto.JournalistId > 0)
+            {
+                journalistVotes = await _journalistRepo.GetTotalVotesAsync(tierQueryDto.JournalistId);
+            }
+            if (tierQueryDto.MediaId > 0)
+            {
+                mediaVotes = await _mediaRepo.GetTotalVotesAsync(tierQueryDto.MediaId);
+            }
+            return journalistVotes + mediaVotes;
         }
     }
 }

@@ -48,6 +48,11 @@ namespace JournalistTierAPI.Data
             }
         }
 
+        public async Task<int> GetTotalVotesAsync(int mediaId)
+        {
+            return await _context.Media.Where(x => x.MediaId == mediaId).CountAsync();
+        }
+
         public async Task<bool> RateMediaAsync(UserMediaRating userMediaRating)
         {
             var userMediaRatingLocal = await _context.UserMediaRating.AsNoTracking().FirstOrDefaultAsync(x => x.MediaId == userMediaRating.MediaId
