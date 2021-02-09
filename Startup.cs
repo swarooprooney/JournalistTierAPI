@@ -29,7 +29,7 @@ namespace JournalistTierAPI
           {
               options.AddDefaultPolicy(policy => policy.AllowAnyHeader()
                   .AllowAnyMethod().WithOrigins("https://localhost:4200"));
-              options.AddPolicy("prodpolicy", policy => policy.AllowAnyHeader()
+              options.AddDefaultPolicy(policy => policy.AllowAnyHeader()
                .AllowAnyMethod().WithOrigins("https://journalisttier.azurewebsites.net"));
           });
             services.AddIdentityServices(Configuration);
