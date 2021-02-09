@@ -47,6 +47,8 @@ namespace JournalistTierAPI
             app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
     {
