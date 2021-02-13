@@ -97,21 +97,10 @@ namespace JournalistTierAPI.Controllers
             if (file.Length > 0)
             {
                 var uploadPhoto = await _photoService.AddPhotoAsync(file);
-                UserForUpdateDto userDto = new UserForUpdateDto
-                {
-                    PhotoUrl = uploadPhoto.Url.ToString()
-                };
-
-                var userName = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                var user = await _repo.GetUserAsync(userName);
-                _mapper.Map(userDto, user);
-                var isUpdated = await _repo.UpdateUserAsync(user);
-                if (isUpdated)
-                {
-                    return Ok(user.PhotoUrl);
-                }
+                return Ok(uploadPhoto.Url.ToString());
             }
-            return BadRequest("Unable to update");
+
+            return BadRequest("Unable to update photo");
         }
 
 

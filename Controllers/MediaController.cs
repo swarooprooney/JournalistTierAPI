@@ -33,19 +33,18 @@ namespace JournalistTierAPI.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddMedia([FromBody] string mediaName)
+        public async Task<IActionResult> AddMedia([FromBody] MediaDto media)
         {
-            if (!string.IsNullOrEmpty(mediaName))
+            if (!ModelState.IsValid)
             {
-                var media = new Media { Name = mediaName };
-                var isMediaAdded = await _mediaRepo.AddMediaAsync(media);
-                if (isMediaAdded)
-                {
-                    return CreatedAtRoute("GetMediaById", new { id = media.MediaId }, _mapper.Map<MediaDto>(media));
-                }
-                return StatusCode(500, "Unable to Add Media at this time, please try later");
+                return BadRequest();
             }
-            return BadRequest("The media name cannot be empty or null");
+            var isMediaAdded = await _mediaRepo.AddMediaAsync(_mapper.Map<Media>(media));
+            if (isMediaAdded)
+            {
+                return CreatedAtRoute("GetMediaById", new { id = media.MediaId }, _mapper.Map<MediaDto>(media));
+            }
+            return StatusCode(500, "Unable to Add Media at this time, please try later");
         }
 
         [HttpGet]
