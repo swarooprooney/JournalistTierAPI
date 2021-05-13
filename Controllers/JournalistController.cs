@@ -73,19 +73,19 @@ namespace JournalistTierAPI.Controllers
         }
 
         [HttpGet("GetJournalistTier")]
-        public async Task<ActionResult<ReturnRatingDto>> GetJournalistTier([FromQuery] TierQueryDto tierQueryDto)
+        public async Task<ActionResult<ReturnRatingDto>> GetJournalistTier([FromQuery] JournalistTierQueryDto tierQueryDto)
         {
-            if (tierQueryDto.JournalistId <= 0 && tierQueryDto.MediaId <= 0)
+            if (tierQueryDto.JournalistId <= 0)
             {
-                return BadRequest("You should atleast provide information about journalist or media you are trying to look up and a topic you want the ratings to");
+                return BadRequest("Journalist details are required to get the ratings.");
             }
             var retunrRatingDto = new ReturnRatingDto();
-            retunrRatingDto.Rating = await _ratingCoordinator.GetRatingsAsync(tierQueryDto);
+            retunrRatingDto.Rating = await _ratingCoordinator.GetRatingsAsync(_mapper.Map<TierQueryDto>(tierQueryDto));
             if (retunrRatingDto.Rating <= 0)
             {
                 retunrRatingDto.Rating = 0.0d;
             }
-            retunrRatingDto.NumberOfVotes = await _ratingCoordinator.GetTotalVotesAsync(tierQueryDto);
+            retunrRatingDto.NumberOfVotes = await _ratingCoordinator.GetTotalVotesAsync(_mapper.Map<TierQueryDto>(tierQueryDto));
             return Ok(retunrRatingDto);
         }
 

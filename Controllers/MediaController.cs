@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using JournalistTierAPI.Coordinators;
 using JournalistTierAPI.Data;
 using JournalistTierAPI.Dtos;
 using JournalistTierAPI.Model;
@@ -13,11 +14,12 @@ namespace JournalistTierAPI.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IMediaRepo _mediaRepo;
-        public MediaController(IMapper mapper, IMediaRepo mediaRepo)
+        private readonly IRatingCalculatorCoordinator _ratingCoordinator;
+        public MediaController(IMapper mapper, IMediaRepo mediaRepo, IRatingCalculatorCoordinator ratingCoordinator = null)
         {
             _mediaRepo = mediaRepo;
             _mapper = mapper;
-
+            _ratingCoordinator = ratingCoordinator;
         }
 
         [HttpGet("{id}", Name = "GetMediaById")]
@@ -69,6 +71,23 @@ namespace JournalistTierAPI.Controllers
                 return Ok();
             }
             return StatusCode(500, "Unable to Rate Media at this time, please try later");
+        }
+
+        [HttpGet("GetMediaRating")]
+        public async Task<IActionResult> GetMediaRating([FromQuery] MediaTierQueryDto tierQueryDto)
+        {
+            if (tierQueryDto.MediaId <= 0)
+            {
+                return BadRequest("Media information is requried to provide the rating");
+            }
+            var retunrRatingDto = new ReturnRatingDto();
+            retunrRatingDto.Rating = await _ratingCoordinator.GetRatingsAsync(_mapper.Map<TierQueryDto>(tierQueryDto));
+            if (retunrRatingDto.Rating <= 0)
+            {
+                retunrRatingDto.Rating = 0.0d;
+            }
+            retunrRatingDto.NumberOfVotes = await _ratingCoordinator.GetTotalVotesAsync(_mapper.Map<TierQueryDto>(tierQueryDto));
+            return Ok(retunrRatingDto);
         }
     }
 }

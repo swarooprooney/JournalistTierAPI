@@ -18,6 +18,8 @@ namespace JournalistTierAPI.Profiles
             CreateMap<User, UserDto>();
             CreateMap<UserForUpdateDto, User>().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null)); ;
             CreateMap<MediaDto, Media>();
+            CreateMap<JournalistTierQueryDto, TierQueryDto>();
+            CreateMap<MediaTierQueryDto, TierQueryDto>();
         }
     }
 }
